@@ -1,7 +1,7 @@
 <x-layout>
-    <h1>{{$post->title}}</h1>
+    <h1>{!!$post->title!!}</h1>
     <div>
-        {!!$post->body!!} 
+        {!!$post->body!!}
     </div>
     <a href="/">Go back</a>
 </x-layout>
