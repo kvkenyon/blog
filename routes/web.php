@@ -17,7 +17,10 @@ use App\Models\User;
 */
 
 Route::get('/', function () {
-    return view('posts', ['posts' => Post::latest()->with('category', 'author')->get()]);
+    return view('posts', [
+        'posts' => Post::latest()->with('category', 'author')->get(),
+        'categories' => Category::all(),
+    ]);
 });
 
 Route::get('/posts/{post:slug}', function (Post $post) {
@@ -26,10 +29,17 @@ Route::get('/posts/{post:slug}', function (Post $post) {
 
 Route::get(
     '/categories/{category:slug}',
-    fn (Category $category) => view('posts', ['posts' => $category->posts->load('category', 'author')])
+    fn (Category $category) => view(
+        'posts',
+        [
+            'posts' => $category->posts->load('category', 'author'),
+            'categories' => Category::all(),
+            'currentCategory' => $category,
+        ]
+    )
 );
 
 Route::get(
     '/authors/{author:username}',
-    fn (User $author) => view('posts', ['posts' => $author->posts->load('category', 'author')])
+    fn (User $author) => view('posts', ['posts' => $author->posts->load('category', 'author'), 'categories' => Category::all()])
 );
